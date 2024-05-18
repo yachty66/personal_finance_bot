@@ -26,7 +26,7 @@ jobs:
     - name: Update access token
       id: update-token
       run: |
-        python -c "
+        python -c """
 import os
 from nordigen import NordigenClient
 from dotenv import load_dotenv, set_key
@@ -51,7 +51,7 @@ def update_access_token():
     print(f'::set-output name=refresh_token::{new_refresh_token}')
 
 update_access_token()
-"
+"""
       env:
         SECRET_ID: ${{ secrets.SECRET_ID }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
