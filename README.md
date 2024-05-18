@@ -8,7 +8,7 @@ Goal is to have a finance bot that retrieves my daily transaction data from N26 
     - [x] find out which timezone the api is using and than based on that schedule the script --> probablay UTC cause metadata and balances show this format too "2024-05-18T01:16:34.203493Z"
     - [x]| write functions so that they return a format which i can paste into the chat
 - [x] create a structured format for the transactions (a nice sentence) which also contains the sum of all transactions
-- [ ] send this as message with an whatsapp bot (in the case whats app is getting to difficult i change to telegram or something similar) (set a beauty profile pic for the bot)
+- [x] send this as message with an whatsapp bot (in the case whats app is getting to difficult i change to telegram or something similar) (set a beauty profile pic for the bot)
     - if the bot fails than i should send a link to an part in my readme where i am explaining how to get a new requisition_id
 - [ ] deal with issue in the case the token expired
 - [ ] setup a serverless function which is running every day 23:59 based on 

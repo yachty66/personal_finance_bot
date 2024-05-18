@@ -18,9 +18,6 @@ def generate_access_token():
     token_data = client.generate_token()
     return token_data
 
-def bank_auth_link():
-    pass
-
 def init_bank_connection():
     institution_id = client.institution.get_institution_id_by_name(
         country="DE",
