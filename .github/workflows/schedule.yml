@@ -34,3 +34,6 @@ jobs:
         REQUISITION_ID: ${{ secrets.REQUISITION_ID }}
         WHATSAPP_URL: ${{ secrets.WHATSAPP_URL }}
         NUMBER: ${{ secrets.NUMBER }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+
