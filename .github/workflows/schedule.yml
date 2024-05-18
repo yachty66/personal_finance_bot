@@ -16,12 +16,47 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'  # Specify the Python version you need
+        python-version: '3.10'  # Specify Python 3.10 or 3.11
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Update access token
+      id: update-token
+      run: |
+        python -c "
+import os
+from nordigen import NordigenClient
+from dotenv import load_dotenv, set_key
+
+# Load secrets from environment variables
+load_dotenv()
+
+# Initialize Nordigen client
+client = NordigenClient(
+    secret_id=os.getenv('SECRET_ID'),
+    secret_key=os.getenv('SECRET_KEY')
+)
+client.token = os.getenv('ACCESS_TOKEN')
+
+def update_access_token():
+    token_data = client.generate_token()
+    new_access_token = token_data['access']
+    new_refresh_token = token_data['refresh']
+    os.environ['ACCESS_TOKEN'] = new_access_token
+    os.environ['REFRESH_TOKEN'] = new_refresh_token
+    print(f'::set-output name=access_token::{new_access_token}')
+    print(f'::set-output name=refresh_token::{new_refresh_token}')
+
+update_access_token()
+"
+      env:
+        SECRET_ID: ${{ secrets.SECRET_ID }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
 
     - name: Run script
       run: |
@@ -29,7 +64,8 @@ jobs:
       env:
         SECRET_ID: ${{ secrets.SECRET_ID }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        ACCESS_TOKEN: ${{ steps.update-token.outputs.access_token }}
+        REFRESH_TOKEN: ${{ steps.update-token.outputs.refresh_token }}
         REQUISITION_ID: ${{ secrets.REQUISITION_ID }}
         WHATSAPP_URL: ${{ secrets.WHATSAPP_URL }}
         NUMBER: ${{ secrets.NUMBER }}
