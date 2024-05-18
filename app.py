@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
 import json 
+import requests
 
 # Load secrets from .env file
 load_dotenv()
@@ -70,7 +71,20 @@ def create_message(transactions):
     formatted_message = format_transaction_info(transaction_info)
     return formatted_message
 
+def send_message(message):
+    url = os.getenv("WHATSAPP_URL")
+    number = os.getenv("NUMBER")
+    payload = json.dumps({
+        "chatId": f"{number}@c.us",
+        "message": message
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, headers=headers, data=payload)
+    print("response", response.text.encode('utf8'))
+
 if __name__ == "__main__":
     transactions = get_transactions()
     message = create_message(transactions)
-    print(message)
+    send_message(message)
